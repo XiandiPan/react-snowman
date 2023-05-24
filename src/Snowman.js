@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { randomWord, ENGLISH_WORDS} from './words'
 
 import "./Snowman.css";
 import img0 from "./0.png";
@@ -25,7 +26,7 @@ import img6 from "./6.png";
 
 function Snowman({
   images = [img0, img1, img2, img3, img4, img5, img6],
-  words = ["apple"],
+  words = [randomWord(ENGLISH_WORDS)],//["apple"]
   maxWrong = 6,
 }) {
   /** by default, allow 6 guesses and use provided gallows images. */
@@ -34,7 +35,7 @@ function Snowman({
   const [guessedLetters, setGuessedLetters] = useState(() => new Set());
   const [answer, setAnswer] = useState((words)[0]);
 
-  const hideLetterBtn = (nWrong > maxWrong) ? "hidden" : "";
+
 
   /** guessedWord: show current-state of word:
    if guessed letters are {a,p,e}, show "app_e" for "apple"
@@ -75,7 +76,7 @@ function Snowman({
       </button>
     ));
   }
-
+/** loadResultOrButton: return the result to render */
   function loadResultOrButton(){
     if (nWrong >= maxWrong){
       return `You lose the word was ${answer}`
@@ -85,6 +86,12 @@ function Snowman({
       return "You win"
     }
   }
+/* Reset: reset the state**/
+  function reSet(){
+     setNWrong(0);
+   setGuessedLetters(() => new Set());
+    setAnswer(randomWord(ENGLISH_WORDS));
+  }
 
   return (
     <div className="Snowman">
@@ -93,6 +100,7 @@ function Snowman({
       <p className="Snowman-word" >{guessedWord()}</p>
       <p id="">{loadResultOrButton()}</p>
       {/* <p className={`letter-btn ${hideLetterBtn}`}>{generateButtons()}</p> */}
+      <button onClick={reSet}>reset button</button>
     </div>
   );
 }
