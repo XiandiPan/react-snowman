@@ -34,6 +34,8 @@ function Snowman({
   const [guessedLetters, setGuessedLetters] = useState(() => new Set());
   const [answer, setAnswer] = useState((words)[0]);
 
+  const hideLetterBtn = (nWrong > 6)? "hidden": "";
+
   /** guessedWord: show current-state of word:
    if guessed letters are {a,p,e}, show "app_e" for "apple"
    */
@@ -62,7 +64,7 @@ function Snowman({
   /** generateButtons: return array of letter buttons to render */
   function generateButtons() {
     return "abcdefghijklmnopqrstuvwxyz".split("").map(ltr => (
-        <button
+        <button className={`letter-btn ${hideLetterBtn}`}
             key={ltr}
             value={ltr}
             onClick={handleGuess}
@@ -76,8 +78,9 @@ function Snowman({
   return (
       <div className="Snowman">
         <img src={(images)[nWrong]} alt={nWrong} />
-        <p className="Snowman-word">{guessedWord()}</p>
-        <p>{generateButtons()}</p>
+        <p>Number wrong: {nWrong}</p>
+        <p className="Snowman-word" >{guessedWord()}</p>
+        <p >{generateButtons()}</p>
       </div>
   );
 }
