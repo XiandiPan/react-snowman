@@ -8,7 +8,7 @@
   letter-spacing: 1em;
 }
 
-.letter-btn > p.hidden {
+p.letter-btn > p.hidden {
   opacity: 0;
   pointer-events: none;
 }

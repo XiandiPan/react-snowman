@@ -24,25 +24,25 @@ import img6 from "./6.png";
  */
 
 function Snowman({
-      images=[img0, img1, img2, img3, img4, img5, img6],
-      words=["apple"],
-      maxWrong=6,
-    }) {
+  images = [img0, img1, img2, img3, img4, img5, img6],
+  words = ["apple"],
+  maxWrong = 6,
+}) {
   /** by default, allow 6 guesses and use provided gallows images. */
 
   const [nWrong, setNWrong] = useState(0);
   const [guessedLetters, setGuessedLetters] = useState(() => new Set());
   const [answer, setAnswer] = useState((words)[0]);
 
-  const hideLetterBtn = (nWrong > 6)? "hidden": "";
+  const hideLetterBtn = (nWrong > maxWrong) ? "hidden" : "";
 
   /** guessedWord: show current-state of word:
    if guessed letters are {a,p,e}, show "app_e" for "apple"
    */
   function guessedWord() {
     return answer
-        .split("")
-        .map(ltr => (guessedLetters.has(ltr) ? ltr : "_"));
+      .split("")
+      .map(ltr => (guessedLetters.has(ltr) ? ltr : "_"));
   }
 
   /** handleGuess: handle a guessed letter:
@@ -64,24 +64,36 @@ function Snowman({
   /** generateButtons: return array of letter buttons to render */
   function generateButtons() {
     return "abcdefghijklmnopqrstuvwxyz".split("").map(ltr => (
-        <button className={`letter-btn ${hideLetterBtn}`}
-            key={ltr}
-            value={ltr}
-            onClick={handleGuess}
-            disabled={guessedLetters.has(ltr)}
-        >
-          {ltr}
-        </button>
+      <button
+        key={ltr}
+        value={ltr}
+        id={ltr}
+        onClick={handleGuess}
+        disabled={guessedLetters.has(ltr)}
+      >
+        {ltr}
+      </button>
     ));
   }
 
+  function loadResultOrButton(){
+    if (nWrong >= maxWrong){
+      return `You lose the word was ${answer}`
+    } else if (nWrong < maxWrong) {
+      return generateButtons()
+    } else {
+      return "You win"
+    }
+  }
+
   return (
-      <div className="Snowman">
-        <img src={(images)[nWrong]} alt={nWrong} />
-        <p>Number wrong: {nWrong}</p>
-        <p className="Snowman-word" >{guessedWord()}</p>
-        <p >{generateButtons()}</p>
-      </div>
+    <div className="Snowman">
+      <img src={(images)[nWrong]} alt={nWrong} />
+      <p>Number wrong: {nWrong}</p>
+      <p className="Snowman-word" >{guessedWord()}</p>
+      <p id="">{loadResultOrButton()}</p>
+      {/* <p className={`letter-btn ${hideLetterBtn}`}>{generateButtons()}</p> */}
+    </div>
   );
 }
 
